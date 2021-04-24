@@ -1,0 +1,20 @@
+version: "3.9"
+
+volumes: 
+  mongodb_data:
+
+services:
+  flask:
+    build: ./
+    ports: [5000:5000]
+    environment: 
+      MONGO_DSN: mongodb://root:rootpassword@mongodb/
+    volumes: [./logs:/var/log/gunicorn]
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mongodb_data:/data/db
