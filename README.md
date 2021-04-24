@@ -67,27 +67,33 @@ $ curl -Is localhost:5000/ready | head -n 1
 HTTP/1.0 200 OK
 ```
 
-## Logging
+## Environment
+
+### Logging
+
+Gunicorn uses the logger.conf. For simplicity there are 2 environment variables to overwrite the default log levels. For more fine grained control, the should be replaced.
+
+Change the log level via environment
 
 ```ini
 LOG_LEVEL=ERROR
 ACCESS_LOG_LEVEL=INFO
 ```
 
-## Gunicorn
+### Database DSN
+
+The connection string is set via
 
 ```ini
-GUNICORN_WORKER_CLASS=gthread
-GUNICORN_WORKERS=2
-GUNICORN_THREADS=4 
+MONGO_DSN=postgresql://user:password@server/
 ```
 
 ## Development
 
-Copy content of the hooks folder into the .git/hooks folder in order to enable the `flake8 pre-commit hook`.
+Install the `pre-commit hook`
 
 ```console
-cp hooks/* .git/hooks/
+pre-commit install
 ```
 
 Flake8 has been configured to accept a maximum line length of 119. When using VS Code, the following setting is required to make flake8 read its config from the `setup.cfg` file.
