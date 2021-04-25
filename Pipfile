@@ -8,11 +8,11 @@ flask = "*"
 pymongo = "*"
 gunicorn = "*"
 json-logging = "*"
+pytest = "*"
 
 [dev-packages]
 flake8 = "*"
 pre-commit = "*"
-pytest = "*"
 black = "*"
 
 [requires]

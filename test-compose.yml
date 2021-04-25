@@ -5,11 +5,8 @@ volumes:
 
 services:
   testapp:
-    image: test
-    build:
-      context: ./
-      args:
-        pipenv_extra: '--dev'
+    image: flaskapp:0.1.8-dev
+    build: ./
     command: python -m pytest -v
     environment: 
       MONGO_DSN: mongodb://root:rootpassword@testdb/  
