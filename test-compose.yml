@@ -10,9 +10,6 @@ services:
     command: python -m pytest -v
     environment: 
       MONGO_DSN: mongodb://root:rootpassword@testdb/  
-      LOG_LEVEL: debug                                  
-      LOG_FORMAT: text                                 
-      FILTER_PROBES: '0'
 
   testdb:
     image: mongo:latest
