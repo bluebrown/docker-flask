@@ -9,7 +9,7 @@ services:
     ports: [5000:5000]
     environment: 
       MONGO_DSN: mongodb://root:rootpassword@mongodb/
-      GUNICORN_CMD_ARGS: "--capture-output --access-logfile=/logs/access.log --log-file=/logs/error.log --log-level=DEBUG"
+      GUNICORN_CMD_ARGS: "--log-level=DEBUG"
     volumes: ["./logs:/logs"]
 
   mongodb:

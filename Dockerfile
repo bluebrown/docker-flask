@@ -15,3 +15,5 @@ ENV MONGO_DSN=postgresql://user:password@server/ \
 CMD ["gunicorn", "app:create_app()"]
 
 COPY app/ ./
+
+RUN mkdir /logs

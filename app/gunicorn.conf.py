@@ -12,8 +12,8 @@ workers = multiprocessing.cpu_count() * 2 + 1  # 2-4 x $(NUM_CORES)
 threads = workers + 1  # 2-4 x $(NUM_CORES)
 
 # logging
-errorlog = "-"
 accesslog = "-"
+errorlog = "/logs/app.log"
 
 # make gunicorn sing json
 access_log_format = '\

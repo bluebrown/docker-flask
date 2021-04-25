@@ -10,11 +10,16 @@ def create(client):
 
     @healthcheck.route("/ready")
     def readyness():
-        try:
-            client.server_info()
-            return Response(status=200)
-        except Exception as e:
-            app.logger.error(e)
-            abort(503)
+        return Response(status=200) if isAlive(client) else abort(503)
 
     return healthcheck
+
+
+def isAlive(client):
+    try:
+        app.logger.debug("trying")
+        client.server_info()
+        return True
+    except Exception as e:
+        app.logger.error(e)
+        return False
