@@ -157,3 +157,22 @@ Flake8 has been configured to accept a maximum line length of 119. When using VS
     "--rcfile=setup.cfg"
 ],
 ```
+
+## Testing
+
+For testing a compose file exists at the root directory. It will build the image with an exta argument to install the dev dependencies. Addtionally the configuration in this file silence the mongodb output so that the `pytest` output can be viewed.
+
+The following command will start the app and a test database container and run the test suit.
+
+```console
+docker-compose -f test-compose.yml up --build && docker-compose -f test-compose.yml down
+```
+
+## Makefile
+
+For convenience both the regular start and the test start command have beed placed in a Makefile.
+
+```console
+make
+make test
+```
