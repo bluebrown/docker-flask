@@ -4,11 +4,13 @@ repos:
     rev: 3.9.1
     hooks:
       - id: flake8
+
   - repo: https://github.com/python/black
     rev: 20.8b1
     hooks:
       - id: black
         language_version: python3.8
+
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.21.0
     hooks:
