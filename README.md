@@ -2,6 +2,35 @@
 
 Demo flask application connected to mongodb with kubernetes compliant health probe endpoints.
 
+```yml
+version: "3.9"
+
+volumes: 
+  mongodb_data:
+
+services:
+  flask:
+    build: ./
+    ports: [5000:5000]
+    volumes: ["./logs:/logs"]
+    environment: 
+      MONGO_DSN: mongodb://root:rootpassword@mongodb/   # valid rfc connection string
+      GUNICORN_CMD_ARGS: "--capture-output"             # see docs for all options
+      LOG_LEVEL: error                                  # debug|info|warning|error|critical
+      LOG_FORMAT: json                                  # json|text
+      FILTER_PROBES: '1'                                # 0|1 - dont log requests to healthcheck endpoints with access logger
+
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mongodb_data:/data/db
+
+```
+
 ## Start the app
 
 The below command will start the flak application and a mongodb in docker container.
@@ -24,7 +53,7 @@ Content-Length: 34
 {"id":"60843466092d7c719ec5063b"}
 ```
 
-A list of all messages can be retrieved on the root endpoint
+A list of all messages can be retrieved on the root endpoint.
 
 ```console
 $ curl localhost:5000/
@@ -33,7 +62,7 @@ $ curl localhost:5000/
 
 ## Health Probe
 
-As long as the app is running it will serve a 200 response on the `/alive` endpoint
+As long as the app is running it will serve a 200 response on the `/alive` endpoint.
 
 ```console
 $ curl -I localhost:5000/alive
@@ -59,7 +88,7 @@ $ curl -Is localhost:5000/ready | head -n 1
 HTTP/1.0 503 SERVICE UNAVAILABLE
 ```
 
-Once the database is started up again the app will return again a 200
+Once the database is started up again the app will return again a 200.
 
 ```console
 $ docker-compose start mongodb
@@ -69,34 +98,36 @@ HTTP/1.0 200 OK
 
 ## Environment
 
-### Gunicorn
-
-The `GUNICORN_CMD_ARGS` variable can be used as per [documentation](https://docs.gunicorn.org/en/20.1.0/configure.html)
-
-```yml
-GUNICORN_CMD_ARGS: "--workers=6 --threads=4 --access-logfile=/logs/access.log --log-file=/logs/error.log --log-level=DEBUG"
-```
-
 ### Logging
 
-The application logs by default into to stdout and stderr. The log format has been configured as JSON to play nicely with modern tools.
+The format of the output is by default `json` to play nicely with modern tools. However it can be set to `text` via the enironment variabe `LOG_FORMAT`. Likewise the log level can be set via `LOG_LEVEL`.
 
-The output can also be directed to log files if needed. For this the gunicons command line args or flags can be used.
+```yml
+LOG_LEVEL: info     # debug|info|warning|error|critical
+LOG_FORMAT: json    # json|text
+```
 
-```console
-docker run --network mongonet \
-    -e mongodb://user:password@server/
-    -e GUNICORN_CMD_ARGS="--access-logfile=/logs/access.log --log-file=/logs/error.log --log-level=DEBUG" \
-    -v $PWD/logs:/logs \
-    flaskapp
+The application logs by default into to stdout and stderr. The output can also be directed to log files if needed. For this the gunicons command line args or flags can be used.
+
+```yml
+volumes: ["./logs/logs"]
+environment: ["GUNICORN_CMD_ARGS=--capture-output"]
 ```
 
 ### Database DSN
 
 The connection string is set via
 
-```ini
-MONGO_DSN=mongodb://user:password@server/
+```yml
+MONGO_DSN: mongodb://user:password@server/
+```
+
+### Gunicorn
+
+The `GUNICORN_CMD_ARGS` variable can be used as per [documentation](https://docs.gunicorn.org/en/20.1.0/configure.html). This can be useful do do some tweaking ad hoc.
+
+```yml
+GUNICORN_CMD_ARGS: "--workers=6 --threads=4"
 ```
 
 ## Development

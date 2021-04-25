@@ -17,8 +17,8 @@ def create(client):
 
 def isAlive(client):
     try:
-        app.logger.debug("trying")
-        client.server_info()
+        info = client.server_info()
+        app.logger.debug(info)
         return True
     except Exception as e:
         app.logger.error(e)
