@@ -39,7 +39,13 @@ The below command will start the flak application and a mongodb in docker contai
 docker-compose up
 ```
 
-Once the container are running, you can post a message.
+Once the container are running, the flask documentation can be downloaded as pdf
+
+```console
+curl localhost:5000/pdf > flask.pdf
+```
+
+There is also an endpoint to accept message posts.
 
 ```console
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"message":"hello, flask"}' http://localhost:5000/msg
