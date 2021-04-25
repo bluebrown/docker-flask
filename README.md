@@ -69,15 +69,26 @@ HTTP/1.0 200 OK
 
 ## Environment
 
+### Gunicorn
+
+The `GUNICORN_CMD_ARGS` variable can be used as per [documentation](https://docs.gunicorn.org/en/20.1.0/configure.html)
+
+```yml
+GUNICORN_CMD_ARGS: "--workers=6 --threads=4 --access-logfile=/logs/access.log --log-file=/logs/error.log --log-level=DEBUG"
+```
+
 ### Logging
 
-Gunicorn uses the logger.conf. For simplicity there are 2 environment variables to overwrite the default log levels. For more fine grained control, the should be replaced.
+The application logs by default into to stdout and stderr. The log format has been configured as JSON to play nicely with modern tools.
 
-Change the log level via environment
+The output can also be directed to log files if needed. For this the gunicons command line args or flags can be used.
 
-```ini
-LOG_LEVEL=ERROR
-ACCESS_LOG_LEVEL=INFO
+```console
+docker run --network mongonet \
+    -e mongodb://user:password@server/
+    -e GUNICORN_CMD_ARGS="--access-logfile=/logs/access.log --log-file=/logs/error.log --log-level=DEBUG" \
+    -v $PWD/logs:/logs \
+    flaskapp
 ```
 
 ### Database DSN
@@ -85,7 +96,7 @@ ACCESS_LOG_LEVEL=INFO
 The connection string is set via
 
 ```ini
-MONGO_DSN=postgresql://user:password@server/
+MONGO_DSN=mongodb://user:password@server/
 ```
 
 ## Development

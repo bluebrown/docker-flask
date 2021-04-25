@@ -7,14 +7,13 @@ COPY Pipfile ./
 COPY Pipfile.lock ./
 RUN pipenv install --system --deploy --ignore-pipfile
 
-RUN mkdir /var/log/gunicorn
-
 EXPOSE 5000
 
-ENV LOG_LEVEL=INFO \
-    MONGO_DSN=postgresql://user:password@server/
+ENV MONGO_DSN=postgresql://user:password@server/ \
+    GUNICORN_CMD_ARGS=""
 
-ENTRYPOINT [ "gunicorn" ]
-CMD ["--log-level=$LOG_LEVEL", "app:app"]
+CMD ["gunicorn", "app:create_app()"]
 
 COPY app/ ./
+
+RUN mkdir /logs

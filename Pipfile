@@ -7,6 +7,7 @@ name = "pypi"
 flask = "*"
 pymongo = "*"
 gunicorn = "*"
+json-logging = "*"
 
 [dev-packages]
 flake8 = "*"
