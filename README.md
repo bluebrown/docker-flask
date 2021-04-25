@@ -1,4 +1,4 @@
-# Flask Nginx Example
+# Docker Flask Example
 
 Demo flask application connected to mongodb with kubernetes compliant health probe endpoints.
 
