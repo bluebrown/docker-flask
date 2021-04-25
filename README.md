@@ -114,3 +114,12 @@ Flake8 has been configured to accept a maximum line length of 119. When using VS
     "--rcfile=setup.cfg"
 ],
 ```
+
+## Pipenv
+
+The project is using pipenv to manage dependencies. It can be useful to set up the virtual environment locally.
+
+```console
+pipenv shell
+pipenv install
+```
