@@ -13,9 +13,7 @@ json-logging = "*"
 flake8 = "*"
 autopep8 = "*"
 pre-commit = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"
-
-[script]
-start = "gunicorn app:app"
