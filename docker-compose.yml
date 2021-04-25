@@ -11,10 +11,10 @@ services:
     volumes: ["./logs:/logs"]
     environment: 
       MONGO_DSN: mongodb://root:rootpassword@mongodb/   # valid rfc connection string
-      GUNICORN_CMD_ARGS: "--capture-output"             # see docs for all options
-      LOG_LEVEL: error                                  # debug|info|warning|error|critical
-      LOG_FORMAT: json                                  # json|text
-      FILTER_PROBES: '1'                                # 0|1 - dont log requests to healthcheck endpoints with access logger
+      #GUNICORN_CMD_ARGS: "--capture-output"             # see docs for all options
+      LOG_LEVEL: debug                                  # debug|info|warning|error|critical
+      LOG_FORMAT: text                                  # json|text
+      FILTER_PROBES: '0'                                # 0|1 - dont log requests to healthcheck endpoints with access logger
 
   mongodb:
     image: mongo:latest

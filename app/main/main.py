@@ -1,4 +1,12 @@
-from flask import Blueprint, jsonify, request, Response, abort, current_app as app
+from flask import (
+    Blueprint,
+    jsonify,
+    send_file,
+    request,
+    Response,
+    abort,
+    current_app as app,
+)
 from bson.json_util import dumps
 from pymongo import errors
 
@@ -6,6 +14,10 @@ from pymongo import errors
 def create(client):
     main = Blueprint("main", __name__)
     messages = client.test.messages
+
+    @main.route("/pdf")
+    def downloadFile():
+        return send_file("main/uploads/flask1.1.pdf", as_attachment=True)
 
     @main.route("/")
     def index():
