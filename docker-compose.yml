@@ -1,6 +1,7 @@
-version: "3.9"
+---
+version: '3.9'
 
-volumes: 
+volumes:
   mongodb_data:
 
 services:
@@ -10,22 +11,20 @@ services:
       context: ./
       dockerfile: Dockerfile
       args:
-        build_date: "2021-04-25"
+        build_date: '2021-04-25'
         version: 0.1.8-dev
         commit_hash: 56411ac98bf4e8a01d00c48303e4b52f34cb49fc
     ports: [5000:5000]
-    volumes: ["./logs:/logs"]
-    environment: 
-      MONGO_DSN: mongodb://root:rootpassword@mongodb/   # valid rfc connection string
-      # GUNICORN_CMD_ARGS: "--capture-output"           # see docs for all options
-      LOG_LEVEL: debug                                  # debug|info|warning|error|critical
-      LOG_FORMAT: json                                  # json|text
-      FILTER_PROBES: '0'                                # 0|1 - dont log requests to healthcheck endpoints with access logger
+    volumes: [./logs:/logs]
+    environment:
+      MONGO_DSN: mongodb://root:rootpassword@mongodb/
+      LOG_LEVEL: debug
+      LOG_FORMAT: json
+      FILTER_PROBES: '0'
 
   mongodb:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    volumes:
-      - mongodb_data:/data/db
+    volumes: [mongodb_data:/data/db]
