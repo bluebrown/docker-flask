@@ -7,18 +7,15 @@ volumes:
 services:
   flask:
     image: flaskapp:0.1.8-dev
-    build:
-      context: ./
-      dockerfile: Dockerfile
-      args:
-        build_date: '2021-04-25'
-        version: 0.1.8-dev
+    build: ./
     ports: [5000:5000]
+    volumes: [./app:/app]
     environment:
+      GUNICORN_CMD_ARGS: --reload
       MONGO_DSN: mongodb://root:rootpassword@mongodb/
-      LOG_LEVEL: error
-      LOG_FORMAT: json
-      FILTER_PROBES: '1'
+      LOG_LEVEL: debug
+      LOG_FORMAT: text
+      FILTER_PROBES: '0'
 
   mongodb:
     image: mongo:latest
@@ -26,3 +23,5 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
     volumes: [mongodb_data:/data/db]
+    logging:
+      driver: none

@@ -161,6 +161,12 @@ Flake8 has been configured to accept a maximum line length of 119. When using VS
 }
 ```
 
+A test environment with hot reload can be started, it will mount the app directory so code changes are picked up and the workers are restarted.
+
+```console
+docker-compose -p dev -f dev-compose.yml up
+```
+
 ## Testing
 
 For testing a compose file exists at the root directory. It is configured to connect to a silent test database.
@@ -174,9 +180,10 @@ docker-compose -p test -f test-compose.yml up && \
 
 ## Makefile
 
-For convenience both the regular start and the test start command have beed placed in a Makefile.
+For convenience the commands are available via make.
 
 ```console
 make
 make test
+make dev
 ```

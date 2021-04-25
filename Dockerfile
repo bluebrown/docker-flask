@@ -6,12 +6,6 @@ WORKDIR /app
 
 RUN python -m pip install pipenv
 
-ENV MONGO_DSN=postgresql://user:password@server/ \
-    GUNICORN_CMD_ARGS="" \
-    LOG_LEVEL=info \
-    LOG_FORMAT=json \
-    FILTER_PROBES='1'
-
 COPY Pipfile ./
 COPY Pipfile.lock ./
 
