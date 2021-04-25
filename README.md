@@ -141,7 +141,7 @@ The project is using pipenv to manage dependencies. It can be useful to set up t
 
 ```console
 pipenv shell
-pipenv sync -d
+pipenv install --dev
 ```
 
 Install the `pre-commit hook`
