@@ -1,4 +1,5 @@
 import multiprocessing
+from os import environ as env
 
 # A directory to use for the worker heartbeat temporary file. Set to in memory due to docker and ebs.
 worker_tmp_dir = "/dev/shm"
@@ -15,46 +16,55 @@ threads = workers + 1  # 2-4 x $(NUM_CORES)
 accesslog = "-"
 errorlog = "/logs/app.log"
 
+LOG_LEVEL = env.get("LOG_LEVEL", "INFO").upper()
+LOG_FORMAT = env.get("LOG_FORMAT", "json")
+FILTER_PROBES = int(env.get("FILTER_PROBES", 0))
+
 # make gunicorn sing json
-access_log_format = '\
-{"time":"%(t)s","remote_address":"%(h)s",\
-"request":"%(r)s","status":%(s)s,"response_length":"%(b)s",\
-"referrer":"%(f)s","user_agent":"%(a)s"}'
+
+if LOG_FORMAT == "json":
+    access_log_format = '{"time":"%(t)s","remote_address":"%(h)s",\
+"request":"%(r)s","status":%(s)s,"response_length":"%(b)s","referrer":"%(f)s","user_agent":"%(a)s"}'
 
 logconfig_dict = dict(
     version=1,
     disable_existing_loggers=True,
-    root={"level": "DEBUG", "handlers": ["json"]},
+    root={"level": LOG_LEVEL, "handlers": ["stdout"]},
     loggers={
         "gunicorn.error": {
-            "level": "DEBUG",
-            "handlers": ["error_json"],
+            "level": LOG_LEVEL,
+            "handlers": ["stderr"],
             "propagate": False,
             "qualname": "gunicorn.error",
         },
         "gunicorn.access": {
             "level": "INFO",
-            "handlers": ["json"],
+            "handlers": ["stdout"],
             "propagate": False,
             "qualname": "gunicorn.access",
         },
     },
     handlers={
-        "json": {
+        "stdout": {
             "class": "logging.StreamHandler",
-            "formatter": "json",
-            "filters": ["healthcheck"],
+            "formatter": LOG_FORMAT,
+            "filters": ["healthcheck"] if FILTER_PROBES == 1 else [],
             "stream": "ext://sys.stdout",
         },
-        "error_json": {
+        "stderr": {
             "class": "logging.StreamHandler",
-            "formatter": "json",
+            "formatter": LOG_FORMAT,
             "stream": "ext://sys.stderr",
         },
     },
     formatters={
         "json": {
             "()": "extensions.CustomJSONLogWebFormatter",
+        },
+        "text": {
+            "class": "logging.Formatter",
+            "format": "%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
     filters={
