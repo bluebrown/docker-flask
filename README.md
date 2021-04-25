@@ -20,7 +20,6 @@ services:
       LOG_FORMAT: json                                  # json|text
       FILTER_PROBES: '1'                                # 0|1 - dont log requests to healthcheck endpoints with access logger
 
-
   mongodb:
     image: mongo:latest
     environment:
