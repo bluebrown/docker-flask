@@ -150,12 +150,15 @@ Install the `pre-commit hook`
 pre-commit install
 ```
 
-Flake8 has been configured to accept a maximum line length of 119. When using VS Code, the following setting is required to make flake8 read its config from the `setup.cfg` file.
+Flake8 has been configured to accept a maximum line length of 119. When using VS Code, the following settings can be used in order to have alignment with the pre commit hook.
 
 ```json
-"python.linting.pylintArgs": [
-    "--rcfile=setup.cfg"
-],
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "black"
+}
 ```
 
 ## Testing

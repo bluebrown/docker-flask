@@ -11,9 +11,12 @@ json-logging = "*"
 
 [dev-packages]
 flake8 = "*"
-autopep8 = "*"
 pre-commit = "*"
 pytest = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
