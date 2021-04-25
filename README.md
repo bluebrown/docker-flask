@@ -132,6 +132,13 @@ GUNICORN_CMD_ARGS: "--workers=6 --threads=4"
 
 ## Development
 
+The project is using pipenv to manage dependencies. It can be useful to set up the virtual environment locally.
+
+```console
+pipenv shell
+pipenv install --dev
+```
+
 Install the `pre-commit hook`
 
 ```console
@@ -144,13 +151,4 @@ Flake8 has been configured to accept a maximum line length of 119. When using VS
 "python.linting.pylintArgs": [
     "--rcfile=setup.cfg"
 ],
-```
-
-## Pipenv
-
-The project is using pipenv to manage dependencies. It can be useful to set up the virtual environment locally.
-
-```console
-pipenv shell
-pipenv install
 ```
