@@ -1,22 +1,16 @@
 FROM python:3.8
 
-ARG version="0.1.0-dev"
-ARG vcs_url="https://github.com/bluebrown/docker-flask"
-ARG vcs_branch="main"
-ARG build_date="unknown"
-ARG commit_hash="unknown"
-
 EXPOSE 5000
 CMD ["gunicorn", "app:create_app()"]
 WORKDIR /app
+
+RUN python -m pip install pipenv
 
 ENV MONGO_DSN=postgresql://user:password@server/ \
     GUNICORN_CMD_ARGS="" \
     LOG_LEVEL=info \
     LOG_FORMAT=json \
     FILTER_PROBES='1'
-
-RUN mkdir /logs && python -m pip install --no-cache pipenv
 
 COPY Pipfile ./
 COPY Pipfile.lock ./
@@ -25,6 +19,13 @@ RUN pipenv install --system --deploy --ignore-pipfile
 
 COPY app/ ./
 COPY README.md ./
+RUN mkdir /logs
+
+ARG version="0.1.0-dev"
+ARG vcs_url="https://github.com/bluebrown/docker-flask"
+ARG vcs_branch="main"
+ARG build_date="unknown"
+ARG commit_hash="unknown"
 
 LABEL org.label-schema.vendor="rainbowstack" \
     org.label-schema.name="flaskapp" \

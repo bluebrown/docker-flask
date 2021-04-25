@@ -5,13 +5,14 @@ volumes:
 
 services:
   flask:
-    image: flaskapp:0.1.5-dev
+    image: flaskapp:0.1.8-dev
     build:
       context: ./
       dockerfile: Dockerfile
       args:
         build_date: "2021-04-25"
-        version: 0.1.5-dev
+        version: 0.1.8-dev
+        commit_hash: 56411ac98bf4e8a01d00c48303e4b52f34cb49fc
     ports: [5000:5000]
     volumes: ["./logs:/logs"]
     environment: 
