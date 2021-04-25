@@ -168,8 +168,8 @@ For testing a compose file exists at the root directory. It is configured to con
 The following command will start the app and a test database container and run the test suit. Afterwards the db container is shut down.
 
 ```console
-docker-compose -f test-compose.yml up
-docker-compose -f test-compose.yml down
+docker-compose -p test -f test-compose.yml up
+docker-compose -p test -f test-compose.yml down
 ```
 
 ## Makefile
