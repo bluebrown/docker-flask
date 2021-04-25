@@ -1,13 +1,16 @@
 version: "3.9"
 
 volumes: 
-  mongodb_data:
+  test_data:
+  pycache:
+
 
 services:
   testapp:
     image: flaskapp:0.1.8-dev
     build: ./
-    command: python -m pytest -v
+    volumes: ["pycache:/app/.pytest_cache"]
+    command: python -m pytest -v --failed-first
     environment: 
       MONGO_DSN: mongodb://root:rootpassword@testdb/  
 
@@ -16,7 +19,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    volumes:
-      - mongodb_data:/data/db
+    volumes: [test_data:/data/db]
     logging:
       driver: "none"
