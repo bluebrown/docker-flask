@@ -5,6 +5,7 @@ volumes:
 
 services:
   flask:
+    image: flaskapp:1
     build: ./
     ports: [5000:5000]
     environment: 
