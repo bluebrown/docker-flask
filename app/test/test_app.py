@@ -3,6 +3,15 @@ from json import dumps
 from http import HTTPStatus
 
 
+def test_get_index():
+    app = create_app()
+    with app.test_client() as tc:
+        res = tc.get("/")
+        assert res.status_code == HTTPStatus.OK
+        assert res.content_type == "text/html; charset=utf-8"
+        assert b" Hello World" in res.data
+
+
 def test_get_messages():
     app = create_app()
     with app.test_client() as tc:
