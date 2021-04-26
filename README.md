@@ -63,10 +63,10 @@ Content-Length: 34
 {"id":"60843466092d7c719ec5063b"}
 ```
 
-A list of all messages can be retrieved on the root endpoint.
+A list of all messages can be retrieved on the msg endpoint.
 
 ```console
-$ curl localhost:5000/
+$ curl localhost:5000/msg
 [{"_id": {"$oid": "60843466092d7c719ec5063b"}, "message": "hello, flask"}]
 ```
 
