@@ -184,12 +184,23 @@ docker-compose -p test -f test-compose.yml up && \
   docker-compose -p test -f test-compose.yml down
 ```
 
+## Nginx
+
+A nginx-compose exists that creates an additional nginx container to reverse proxy the requests to gunicorn over unix sockets in a shared volume.
+
+This is because gunicorn inst a fully fletched webserver, is is recommend to use a reverse proxy. Nginx plays well with gunicorn.
+
+```console
+docker-compose -p proxy -f nginx-compose.yml up --build
+```
+
 ## Makefile
 
 For convenience the commands are available via make.
 
 ```console
 make
+make proxy
 make test
 make dev
 ```

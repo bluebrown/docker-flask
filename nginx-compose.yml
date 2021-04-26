@@ -1,0 +1,42 @@
+---
+version: '3.9'
+
+volumes:
+  prod_data:
+  socket:
+  static:
+
+services:
+  nginx:
+    image: socketproxy
+    build: nginx/
+    volumes:
+      - socket:/tmp
+      - static:/static
+    ports: [5000:80]
+
+  flask:
+    image: flaskapp:0.1.8-prod
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        created: '2021-04-26'
+        version: 0.1.8-prod
+    volumes:
+      - ./app:/app
+      - socket:/tmp
+      - static:/app/main/static
+    environment:
+      GUNICORN_CMD_ARGS: --bind unix:/tmp/gunicorn.sock
+      MONGO_URI: mongodb://root:rootpassword@mongo/
+      LOG_LEVEL: info
+      LOG_FORMAT: json
+      FILTER_PROBES: '1'
+
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    volumes: [prod_data:/data/db]
