@@ -94,7 +94,7 @@ HTTP/1.0 200 OK
 The behavior can be be tested by shutting down the database container. Once the database is down, the application with return a status 503 response.
 
 ```console
-$ docker-compose stop mongodb
+$ docker-compose stop mongo
 $ curl -Is localhost:5000/ready | head -n 1
 HTTP/1.0 503 SERVICE UNAVAILABLE
 ```
@@ -102,7 +102,7 @@ HTTP/1.0 503 SERVICE UNAVAILABLE
 Once the database is started up again the app will return again a 200.
 
 ```console
-$ docker-compose start mongodb
+$ docker-compose start mongo
 $ curl -Is localhost:5000/ready | head -n 1
 HTTP/1.0 200 OK
 ```
