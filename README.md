@@ -116,7 +116,7 @@ LOG_FORMAT: json    # json|text
 The application logs by default into to stdout and stderr. The output can also be directed to log files if needed. For this the gunicorns command line args or flags can be used.
 
 ```yml
-volumes: ["./log/var/log"]
+volumes: ["./log:/var/log"]
 environment: ["GUNICORN_CMD_ARGS=--capture-output"]
 ```
 
