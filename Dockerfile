@@ -44,6 +44,5 @@ LABEL org.opencontainers.created=${created} \
     dev.rainbowstack.healthcheck.readiness="GET /ready HTTP/1.1" \
     dev.rainbowstack.healthcheck.liveliness="GET /ready HTTP/1.1"
 
-
 COPY README.md ./
 COPY app/ ./
