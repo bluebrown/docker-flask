@@ -41,8 +41,8 @@ LABEL org.label-schema.vendor="rainbowstack" \
     FILTER_PROBES=0|1 dont log requests to healthcheck endpoints with access logger,\
     GUNICORN_CMD_ARGS=see docs for all options,\
     MONGO_URI=a RFC-compliant URI" \
-    org.label-schema.healthcheck.readiness="/ready" \
-    org.label-schema.healthcheck.liveliness="/alive"
+    org.label-schema.healthcheck.readiness="GET /ready HTTP/1.1" \
+    org.label-schema.healthcheck.liveliness="GET /alive HTTP/1.1"
 
 COPY README.md ./
 COPY app/ ./
