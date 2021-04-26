@@ -55,7 +55,7 @@ def test_ready():
         res = tc.get("/ready")
         assert res.status_code == HTTPStatus.OK
         goodURL = app.config["MONGO_URI"]
-        app.config["MONGO_URI"] = "mongodb://notexistd@db/"
+        app.config["MONGO_URI"] = "mongodb://notexist@db/"
         res = tc.get("/ready")
         assert res.status_code == HTTPStatus.SERVICE_UNAVAILABLE
         app.config["MONGO_URI"] = goodURL
