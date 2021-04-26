@@ -40,7 +40,9 @@ LABEL org.label-schema.vendor="rainbowstack" \
     LOG_FORMAT=json|text,\
     FILTER_PROBES=0|1 dont log requests to healthcheck endpoints with access logger,\
     GUNICORN_CMD_ARGS=see docs for all options,\
-    MONGO_URI=a RFC-compliant URI"
+    MONGO_URI=a RFC-compliant URI" \
+    org.label-schema.healthcheck.readyness="/ready" \
+    org.label-schema.healthcheck.liveliness="/alive"
 
 COPY README.md ./
 COPY app/ ./
