@@ -12,7 +12,7 @@ def create_app():
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     app.logger.removeHandler(default_handler)
 
-    app.config["MONGO_URI"] = env.get("MONGO_DSN")
+    app.config["MONGO_URI"] = env.get("MONGO_URI")
 
     app.register_blueprint(main)
     app.register_blueprint(healthcheck)

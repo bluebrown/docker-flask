@@ -20,7 +20,7 @@ services:
     ports: [5000:5000]
     volumes: ["./log:/var/log"]
     environment: 
-      MONGO_DSN: mongodb://root:rootpassword@mongo/     # valid rfc connection string
+      MONGO_URI: mongodb://root:rootpassword@mongo/     # valid rfc connection string
       GUNICORN_CMD_ARGS: --capture-output               # see docs for all options
       LOG_LEVEL: error                                  # debug|info|warning|error|critical
       LOG_FORMAT: json                                  # json|text
@@ -125,12 +125,12 @@ volumes: ["./log:/var/log"]
 environment: ["GUNICORN_CMD_ARGS=--capture-output"]
 ```
 
-### Database DSN
+### Database URI
 
 The connection string is set via
 
 ```yml
-MONGO_DSN: mongodb://user:password@server/
+MONGO_URI: mongodb://user:password@server/
 ```
 
 ### Gunicorn

@@ -12,7 +12,7 @@ services:
     volumes: [pycache:/app/.pytest_cache]
     command: python -m pytest -v --failed-first
     environment:
-      MONGO_DSN: mongodb://root:rootpassword@mongo/
+      MONGO_URI: mongodb://root:rootpassword@mongo/
 
   mongo:
     image: mongo:latest
