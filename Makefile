@@ -7,3 +7,6 @@ test:
 
 dev:
 	docker-compose -p dev -f dev-compose.yml up --build
+
+proxy:
+	docker-compose -p proxy -f nginx-compose.yml up --build
