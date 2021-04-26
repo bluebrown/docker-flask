@@ -2,9 +2,8 @@ from os import environ as env
 from flask import Flask
 from flask.logging import default_handler
 from werkzeug.middleware.proxy_fix import ProxyFix
-from pymongo import MongoClient
-from main import main
-from healthcheck import healthcheck
+from main.main import main
+from healthcheck.healthcheck import healthcheck
 
 
 def create_app():
@@ -14,9 +13,8 @@ def create_app():
     app.logger.removeHandler(default_handler)
 
     app.config["MONGO_URI"] = env.get("MONGO_DSN")
-    client = MongoClient(app.config["MONGO_URI"])
 
-    app.register_blueprint(main.create(client))
-    app.register_blueprint(healthcheck.create(client))
+    app.register_blueprint(main)
+    app.register_blueprint(healthcheck)
 
     return app

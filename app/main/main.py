@@ -1,53 +1,9 @@
-from flask import (
-    Blueprint,
-    jsonify,
-    send_file,
-    request,
-    Response,
-    abort,
-    current_app as app,
-)
-from bson.json_util import dumps
-from pymongo import errors
+from flask import Blueprint
+
+from main.views.download import PDFDownload
+from main.views.index import MsgAPI
 
 
-def create(client):
-    main = Blueprint("main", __name__)
-    messages = client.test.messages
-
-    @main.route("/pdf")
-    def downloadFile():
-        return send_file("main/uploads/flask1.1.pdf", as_attachment=True)
-
-    @main.route("/")
-    def index():
-        try:
-            msgs = messages.find()
-        except errors.ServerSelectionTimeoutError as timeout:
-            app.log_exception(timeout)
-            abort(503)
-        except Exception as generic:
-            app.log_exception(generic)
-            abort(500)
-
-        return Response(dumps(msgs), content_type="application/json")
-
-    @main.route("/msg", methods=["POST"])
-    def msg():
-        if not request.data:
-            abort(400)
-        content = request.get_json(silent=True)
-        app.logger.debug(f"message posted: {content}")
-        try:
-            result = messages.insert_one({"message": content.get("message")})
-        except errors.ServerSelectionTimeoutError as timeout:
-            app.log_exception(timeout)
-            abort(503)
-        except Exception as generic:
-            app.log_exception(generic)
-            abort(400)
-        payload = jsonify(id=str(result.inserted_id))
-        app.logger.debug(f"payload: {payload}")
-        return payload, 201
-
-    return main
+main = Blueprint("main", __name__)
+main.add_url_rule("/pdf", view_func=PDFDownload.as_view("pdf"))
+main.add_url_rule("/msg", view_func=MsgAPI.as_view("msg"))

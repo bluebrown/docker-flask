@@ -1,25 +1,8 @@
-from flask import Response, Blueprint, abort, current_app as app
+from flask import Blueprint
+from healthcheck.probes.livelyness import Alive
+from healthcheck.probes.readyness import Ready
 
 
-def create(client):
-    healthcheck = Blueprint("healthcheck", __name__)
-
-    @healthcheck.route("/alive")
-    def livelyness():
-        return Response(status=200)
-
-    @healthcheck.route("/ready")
-    def readyness():
-        return Response(status=200) if isAlive(client) else abort(503)
-
-    return healthcheck
-
-
-def isAlive(client):
-    try:
-        info = client.server_info()
-        app.logger.debug(info)
-        return True
-    except Exception as e:
-        app.logger.error(e)
-        return False
+healthcheck = Blueprint("healthcheck", __name__)
+healthcheck.add_url_rule("/alive", view_func=Alive.as_view("alive"))
+healthcheck.add_url_rule("/ready", view_func=Ready.as_view("ready"))
