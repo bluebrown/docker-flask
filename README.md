@@ -32,7 +32,7 @@ services:
 
 ## Start the app
 
-The below command will start the flak application and a mongodb in docker container.
+The below command will start the flask application and a mongodb in docker container.
 
 ```console
 docker-compose up

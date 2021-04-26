@@ -28,10 +28,11 @@ class MsgAPI(MethodView):
             abort(400)
         content = request.get_json(silent=True)
         app.logger.debug(f"message posted: {content}")
+        msg = content.get("message", None)
+        if not msg:
+            abort(422)
         try:
-            result = get_db().test.messages.insert_one(
-                {"message": content.get("message")}
-            )
+            result = get_db().test.messages.insert_one({"message": msg})
         except errors.ServerSelectionTimeoutError as timeout:
             app.log_exception(timeout)
             abort(503)

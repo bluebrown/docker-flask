@@ -16,6 +16,10 @@ def test_post_message():
         res = tc.post(
             "/msg", data=dumps(dict(foo="bar")), content_type="application/json"
         )
+        assert res.status_code == 422
+        res = tc.post(
+            "/msg", data=dumps(dict(message="valid")), content_type="application/json"
+        )
         assert res.status_code == 201
         assert res.content_type == "application/json"
 
