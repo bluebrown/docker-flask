@@ -6,7 +6,7 @@ Demo flask application connected to mongodb with kubernetes compliant health pro
 version: "3.9"
 
 volumes: 
-  mongodb_data:
+  prod_data:
 
 services:
   flask:
@@ -14,19 +14,18 @@ services:
     ports: [5000:5000]
     volumes: ["./log:/var/log"]
     environment: 
-      MONGO_DSN: mongodb://root:rootpassword@mongodb/   # valid rfc connection string
-      GUNICORN_CMD_ARGS: "--capture-output"             # see docs for all options
+      MONGO_DSN: mongodb://root:rootpassword@mongo/     # valid rfc connection string
+      GUNICORN_CMD_ARGS: --capture-output               # see docs for all options
       LOG_LEVEL: error                                  # debug|info|warning|error|critical
       LOG_FORMAT: json                                  # json|text
       FILTER_PROBES: '1'                                # 0|1 - don't log requests to healthcheck endpoints with access logger
 
-  mongodb:
+  mongo:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    volumes:
-      - mongodb_data:/data/db
+    volumes: [prod_data:/data/db]
 
 ```
 

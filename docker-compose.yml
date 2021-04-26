@@ -2,11 +2,11 @@
 version: '3.9'
 
 volumes:
-  mongodb_data:
+  prod_data:
 
 services:
   flask:
-    image: flaskapp:0.1.8-dev
+    image: flaskapp:0.1.8-prod
     build:
       context: ./
       dockerfile: Dockerfile
@@ -15,14 +15,14 @@ services:
         version: 0.1.8-dev
     ports: [5000:5000]
     environment:
-      MONGO_DSN: mongodb://root:rootpassword@mongodb/
+      MONGO_DSN: mongodb://root:rootpassword@mongo/
       LOG_LEVEL: error
       LOG_FORMAT: json
       FILTER_PROBES: '1'
 
-  mongodb:
+  mongo:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    volumes: [mongodb_data:/data/db]
+    volumes: [prod_data:/data/db]

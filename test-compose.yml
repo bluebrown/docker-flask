@@ -6,15 +6,15 @@ volumes:
   pycache:
 
 services:
-  testapp:
-    image: flaskapp:0.1.8-dev
+  flask:
+    image: flaskapp:0.1.8-test
     build: ./
     volumes: [pycache:/app/.pytest_cache]
     command: python -m pytest -v --failed-first
     environment:
-      MONGO_DSN: mongodb://root:rootpassword@testdb/
+      MONGO_DSN: mongodb://root:rootpassword@mongo/
 
-  testdb:
+  mongo:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root

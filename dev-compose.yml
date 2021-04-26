@@ -2,7 +2,7 @@
 version: '3.9'
 
 volumes:
-  mongodb_data:
+  dev_data:
 
 services:
   flask:
@@ -12,16 +12,16 @@ services:
     volumes: [./app:/app]
     environment:
       GUNICORN_CMD_ARGS: --reload
-      MONGO_DSN: mongodb://root:rootpassword@mongodb/
+      MONGO_DSN: mongodb://root:rootpassword@mongo/
       LOG_LEVEL: debug
       LOG_FORMAT: text
       FILTER_PROBES: '0'
 
-  mongodb:
+  mongo:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    volumes: [mongodb_data:/data/db]
+    volumes: [dev_data:/data/db]
     logging:
       driver: none
