@@ -12,13 +12,13 @@ services:
   flask:
     build: ./
     ports: [5000:5000]
-    volumes: ["./logs:/logs"]
+    volumes: ["./log:/var/log"]
     environment: 
       MONGO_DSN: mongodb://root:rootpassword@mongodb/   # valid rfc connection string
       GUNICORN_CMD_ARGS: "--capture-output"             # see docs for all options
       LOG_LEVEL: error                                  # debug|info|warning|error|critical
       LOG_FORMAT: json                                  # json|text
-      FILTER_PROBES: '1'                                # 0|1 - dont log requests to healthcheck endpoints with access logger
+      FILTER_PROBES: '1'                                # 0|1 - don't log requests to healthcheck endpoints with access logger
 
   mongodb:
     image: mongo:latest
@@ -70,12 +70,13 @@ $ curl localhost:5000/
 As long as the app is running it will serve a 200 response on the `/alive` endpoint.
 
 ```console
-$ curl -I localhost:5000/alive
-HTTP/1.0 200 OK
-Content-Type: application/json
-Content-Length: 24
-Server: Werkzeug/1.0.1 Python/3.9.4
-Date: Fri, 23 Apr 2021 14:34:54 GMT
+$ curl -i localhost:5000/alive
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 26 Apr 2021 01:33:25 GMT
+Connection: keep-alive
+Content-Type: text/html; charset=utf-8
+Content-Length: 0
 ```
 
 As long as the database connection is working the app will return a 200 response on `/ready`.
@@ -105,17 +106,17 @@ HTTP/1.0 200 OK
 
 ### Logging
 
-The format of the output is by default `json` to play nicely with modern tools. However it can be set to `text` via the enironment variabe `LOG_FORMAT`. Likewise the log level can be set via `LOG_LEVEL`.
+The format of the output is by default `json` to play nicely with modern tools. However it can be set to `text` via the environment variable `LOG_FORMAT`. Likewise the log level can be set via `LOG_LEVEL`.
 
 ```yml
 LOG_LEVEL: info     # debug|info|warning|error|critical
 LOG_FORMAT: json    # json|text
 ```
 
-The application logs by default into to stdout and stderr. The output can also be directed to log files if needed. For this the gunicons command line args or flags can be used.
+The application logs by default into to stdout and stderr. The output can also be directed to log files if needed. For this the gunicorns command line args or flags can be used.
 
 ```yml
-volumes: ["./logs/logs"]
+volumes: ["./log/var/log"]
 environment: ["GUNICORN_CMD_ARGS=--capture-output"]
 ```
 
@@ -137,7 +138,7 @@ GUNICORN_CMD_ARGS: "--workers=6 --threads=4"
 
 ## Development
 
-The project is using pipenv to manage dependencies. It can be useful to set up the virtual environment locally.
+The project is using `pipenv` to manage dependencies. It can be useful to set up the virtual environment locally.
 
 ```console
 pipenv shell
