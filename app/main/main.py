@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 from main.views.download import PDFDownload
-from main.views.index import MsgAPI
+from main.views.messages import MsgAPI
 
 
 main = Blueprint("main", __name__)

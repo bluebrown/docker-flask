@@ -14,7 +14,7 @@ threads = workers + 1  # 2-4 x $(NUM_CORES)
 
 # logging
 accesslog = "-"
-errorlog = "/logs/app.log"
+errorlog = "/var/log/gunicorn.log"
 
 LOG_LEVEL = env.get("LOG_LEVEL", "INFO").upper()
 LOG_FORMAT = env.get("LOG_FORMAT", "json")

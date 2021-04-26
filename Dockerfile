@@ -12,10 +12,6 @@ COPY Pipfile.lock ./
 ARG pipenv_extra=""
 RUN pipenv install --system --deploy --ignore-pipfile ${pipenv_extra}
 
-COPY app/ ./
-COPY README.md ./
-RUN mkdir /logs
-
 ARG version="0.1.0-dev"
 ARG vcs_url="https://github.com/bluebrown/docker-flask"
 ARG vcs_branch="main"
@@ -43,3 +39,6 @@ LABEL org.label-schema.vendor="rainbowstack" \
     FILTER_PROBES=0|1 dont log requests to healthcheck endpoints with access logger,\
     GUNICORN_CMD_ARGS=see docs for all options,\
     MONGO_DSN=valid rfc connection string"
+
+COPY README.md ./
+COPY app/ ./

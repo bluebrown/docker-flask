@@ -1,20 +1,42 @@
 from app import create_app
+from json import dumps
 
 
-def test_index():
-    """
-    GIVEN a Flask application configured for testing
-    WHEN the '/' page is requested (GET)
-    THEN check that the response is valid
-    """
-    flask_app = create_app()
-
-    # Create a test client using the Flask application configured for testing
-    with flask_app.test_client() as test_client:
-        response = test_client.get("/")
-        print(response.data)
-        assert response.status_code == 200
+def test_get_messages():
+    app = create_app()
+    with app.test_client() as tc:
+        res = tc.get("/msg")
+        assert res.status_code == 200
+        assert res.content_type == "application/json"
 
 
-def test_fail():
-    assert 1 == 2
+def test_post_message():
+    app = create_app()
+    with app.test_client() as tc:
+        res = tc.post(
+            "/msg", data=dumps(dict(foo="bar")), content_type="application/json"
+        )
+        assert res.status_code == 201
+        assert res.content_type == "application/json"
+
+
+def test_get_pdf():
+    app = create_app()
+    with app.test_client() as tc:
+        res = tc.get("/pdf")
+        assert res.status_code == 200
+        assert res.content_type == "application/pdf"
+
+
+def test_alive():
+    app = create_app()
+    with app.test_client() as tc:
+        res = tc.get("/alive")
+        assert res.status_code == 200
+
+
+def test_ready():
+    app = create_app()
+    with app.test_client() as tc:
+        res = tc.get("/ready")
+        assert res.status_code == 200
