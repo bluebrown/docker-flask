@@ -1,6 +1,6 @@
 from flask import Blueprint
-from healthcheck.probes.livelyness import Alive
-from healthcheck.probes.readyness import Ready
+from healthcheck.probes.liveliness import Alive
+from healthcheck.probes.readiness import Ready
 
 
 healthcheck = Blueprint("healthcheck", __name__)
