@@ -10,7 +10,13 @@ volumes:
 
 services:
   flask:
-    build: ./
+    image: flaskapp:0.1.8-prod
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        build_date: '2021-04-25'
+        version: 0.1.8-prod
     ports: [5000:5000]
     volumes: ["./log:/var/log"]
     environment: 
