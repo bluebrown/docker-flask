@@ -44,3 +44,10 @@ def test_ready():
     with app.test_client() as tc:
         res = tc.get("/ready")
         assert res.status_code == 200
+        goodURL = app.config["MONGO_URI"]
+        app.config["MONGO_URI"] = "mongodb://notexistd@db/"
+        res = tc.get("/ready")
+        assert res.status_code == 503
+        app.config["MONGO_URI"] = goodURL
+        res = tc.get("/ready")
+        assert res.status_code == 200
