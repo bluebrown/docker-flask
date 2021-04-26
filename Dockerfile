@@ -32,7 +32,7 @@ LABEL org.label-schema.vendor="rainbowstack" \
     org.label-schema.docker.cmd="docker run --network mongonet -p 5000:5000 flaskapp" \
     org.label-schema.docker.cmd.devel="docker run --network mongonet -p 5000:5000 \
     -e LOG_LEVEL debug -e LOG_FORMAT text -e GUNICORN_CMD_ARGS=--reload flaskapp" \
-    org.label-schema.docker.cmd.test="docker run --network mongonet myapp pytest -v" \
+    org.label-schema.docker.cmd.test="docker run --network mongonet flaskapp pytest -v" \
     org.label-schema.docker.cmd.debug="docker exec -ti $CONTAINER bash" \
     org.label-schema.docker.cmd.help="docker exec -ti $CONTAINER gunicorn --help" \
     org.label-schema.docker.params="LOG_LEVEL=debug|info|warning|error|critical,\
