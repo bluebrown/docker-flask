@@ -17,18 +17,18 @@ ARG branch="main"
 ARG created="unknown"
 ARG commit_hash="unknown"
 
-LABEL org.opencontainers.created=${created} \
-    org.opencontainers.url="https://github.com/bluebrown/docker-flask"  \
-    org.opencontainers.source="https://github.com/bluebrown/docker-flask" \
-    org.opencontainers.version=${version} \
-    org.opencontainers.revision=${commit_hash} \
-    org.opencontainers.vendor="rainbowstack" \
-    org.opencontainers.title="flaskapp" \
-    org.opencontainers.description="demo flask app" \
-    org.opencontainers.documentation="https://github.com/bluebrown/docker-flask/blob/main/README.md" \
-    org.opencontainers.authors="nico braun" \
-    org.opencontainers.licenses="(BSD-1-Clause)" \
-    org.opencontainers.ref.name=${branch} \
+LABEL org.opencontainers.image.created=${created} \
+    org.opencontainers.image.url="https://github.com/bluebrown/docker-flask"  \
+    org.opencontainers.image.source="https://github.com/bluebrown/docker-flask" \
+    org.opencontainers.image.version=${version} \
+    org.opencontainers.image.revision=${commit_hash} \
+    org.opencontainers.image.vendor="rainbowstack" \
+    org.opencontainers.image.title="flaskapp" \
+    org.opencontainers.image.description="demo flask app" \
+    org.opencontainers.image.documentation="https://github.com/bluebrown/docker-flask/blob/main/README.md" \
+    org.opencontainers.image.authors="nico braun" \
+    org.opencontainers.image.licenses="(BSD-1-Clause)" \
+    org.opencontainers.image.ref.name=${branch} \
     org.label-schema.docker.cmd="docker run --network mongonet -p 5000:5000 flaskapp" \
     org.label-schema.docker.cmd.devel="docker run --network mongonet -p 5000:5000 \
     -e LOG_LEVEL debug -e LOG_FORMAT text -e GUNICORN_CMD_ARGS=--reload \
@@ -44,5 +44,4 @@ LABEL org.opencontainers.created=${created} \
     dev.rainbowstack.healthcheck.readiness="GET /ready HTTP/1.1" \
     dev.rainbowstack.healthcheck.liveliness="GET /ready HTTP/1.1"
 
-COPY README.md ./
 COPY app/ ./
