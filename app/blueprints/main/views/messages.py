@@ -8,14 +8,14 @@ from flask import (
 )
 from bson.json_util import dumps
 from pymongo import errors
-from extensions.get_db import get_db
 from http import HTTPStatus
+from global_objects import db
 
 
 class MsgAPI(MethodView):
     def get(self):
         try:
-            msgs = get_db().test.messages.find()
+            msgs = db.connection.test.messages.find()
         except errors.ServerSelectionTimeoutError as timeout:
             app.log_exception(timeout)
             abort(HTTPStatus.SERVICE_UNAVAILABLE)
@@ -33,7 +33,7 @@ class MsgAPI(MethodView):
         if not msg:
             abort(HTTPStatus.UNPROCESSABLE_ENTITY)
         try:
-            result = get_db().test.messages.insert_one({"message": msg})
+            result = db.connection.test.messages.insert_one({"message": msg})
         except errors.ServerSelectionTimeoutError as timeout:
             app.log_exception(timeout)
             abort(HTTPStatus.SERVICE_UNAVAILABLE)

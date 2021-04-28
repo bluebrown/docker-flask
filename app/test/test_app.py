@@ -1,10 +1,9 @@
-from app import create_app
+from app import app
 from json import dumps
 from http import HTTPStatus
 
 
 def test_get_index():
-    app = create_app()
     with app.test_client() as tc:
         res = tc.get("/")
         assert res.status_code == HTTPStatus.OK
@@ -13,7 +12,6 @@ def test_get_index():
 
 
 def test_get_messages():
-    app = create_app()
     with app.test_client() as tc:
         res = tc.get("/msg")
         assert res.status_code == HTTPStatus.OK
@@ -21,7 +19,6 @@ def test_get_messages():
 
 
 def test_post_message():
-    app = create_app()
     with app.test_client() as tc:
         res = tc.post(
             "/msg", data=dumps(dict(foo="bar")), content_type="application/json"
@@ -35,7 +32,6 @@ def test_post_message():
 
 
 def test_get_pdf():
-    app = create_app()
     with app.test_client() as tc:
         res = tc.get("/pdf")
         assert res.status_code == HTTPStatus.OK
@@ -43,14 +39,12 @@ def test_get_pdf():
 
 
 def test_alive():
-    app = create_app()
     with app.test_client() as tc:
         res = tc.get("/alive")
         assert res.status_code == HTTPStatus.OK
 
 
 def test_ready():
-    app = create_app()
     with app.test_client() as tc:
         res = tc.get("/ready")
         assert res.status_code == HTTPStatus.OK
