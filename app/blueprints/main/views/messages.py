@@ -13,6 +13,9 @@ from global_objects import db
 
 
 class MsgAPI(MethodView):
+    """The MsgApi class implements a post and a get method to
+    insert and retrieve messages from mongodb."""
+
     def get(self):
         try:
             msgs = db.connection.test.messages.find()
