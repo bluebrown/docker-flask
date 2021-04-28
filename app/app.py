@@ -1,8 +1,8 @@
 from os import environ as env
 from flask import Flask, g
 from flask.logging import default_handler
-from extensions.with_proxy_fix import with_proxy_fix
 
+from extensions.with_proxy_fix import with_proxy_fix
 from blueprints import register_blueprints
 
 
