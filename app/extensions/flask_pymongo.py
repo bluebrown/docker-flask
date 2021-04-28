@@ -3,6 +3,9 @@ from flask import current_app, _app_ctx_stack
 
 
 class MongoController(object):
+    """MongoController class is a Wrapper for a mongodb connection.
+    It will take down of connection and disconnection on each request."""
+
     def __init__(self, app=None):
         self.app = app
         if app is not None:
