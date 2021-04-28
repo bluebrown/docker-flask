@@ -5,6 +5,8 @@ from http import HTTPStatus
 
 
 class Ready(View):
+    """The Ready class implements the readiness endpoint"""
+
     def dispatch_request(self):
         try:
             info = db.connection.server_info()
