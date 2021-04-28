@@ -59,7 +59,7 @@ logconfig_dict = dict(
     },
     formatters={
         "json": {
-            "()": "extensions.CustomJSONLogWebFormatter",
+            "()": "extensions.logger.CustomJSONLogWebFormatter",
         },
         "text": {
             "class": "logging.Formatter",
@@ -69,7 +69,7 @@ logconfig_dict = dict(
     },
     filters={
         "healthcheck": {
-            "()": "extensions.HealthCheckFilter",
+            "()": "extensions.logger.HealthCheckFilter",
         }
     },
 )

@@ -8,7 +8,7 @@ from flask import (
 )
 from bson.json_util import dumps
 from pymongo import errors
-from extensions import get_db
+from extensions.get_db import get_db
 from http import HTTPStatus
 
 

@@ -1,5 +1,5 @@
 from flask.views import View
-from extensions import get_db
+from extensions.get_db import get_db
 from flask import abort, Response, current_app as app
 from http import HTTPStatus
 

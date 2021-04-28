@@ -1,10 +1,9 @@
 from os import environ as env
-from flask import Flask
+from flask import Flask, g
 from flask.logging import default_handler
-from werkzeug.middleware.proxy_fix import ProxyFix
-from main.main import main
-from healthcheck.healthcheck import healthcheck
-import re
+from extensions.with_proxy_fix import with_proxy_fix
+
+from blueprints import register_blueprints
 
 
 def create_app():
@@ -12,17 +11,21 @@ def create_app():
     app = Flask(__name__)
     app.logger.removeHandler(default_handler)
 
-    proxy_fix = env.get("PROXY_FIX")
-    if proxy_fix:
-        kwargs = {
-            k: int(v.strip('"')) for k, v in re.findall(r'(\S+)=(".*?"|\S+)', proxy_fix)
-        }
-        app.logger.debug(f"parsed PROXY_FIX: {kwargs}")
-        app.wsgi_app = ProxyFix(app.wsgi_app, **kwargs)
-
     app.config["MONGO_URI"] = env.get("MONGO_URI")
+    app.config["PROXY_FIX"] = env.get("PROXY_FIX")
 
-    app.register_blueprint(main)
-    app.register_blueprint(healthcheck)
+    # apply proxy fix if needed
+    app = with_proxy_fix(app)
+
+    # register all blueprints
+    register_blueprints(app)
+
+    # make sure db is closed after each request
+    @app.teardown_appcontext
+    def close_db(exception):
+        if exception:
+            app.log_exception(exception)
+        if "db" in g:
+            g.db.close()
 
     return app
