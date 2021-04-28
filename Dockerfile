@@ -1,7 +1,7 @@
 FROM python:3.8-alpine
 
 EXPOSE 5000
-CMD ["gunicorn", "app:create_app()"]
+CMD ["gunicorn", "app:app"]
 WORKDIR /app
 
 RUN python -m pip install pipenv
