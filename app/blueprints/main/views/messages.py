@@ -3,6 +3,7 @@ from flask import request
 from http import HTTPStatus
 from global_objects import db
 from helpers.customflask import ApiException
+from bson.json_util import dumps
 
 
 class MsgAPI(MethodView):
@@ -10,7 +11,7 @@ class MsgAPI(MethodView):
     insert and retrieve messages from mongodb."""
 
     def get(self):
-        return db.connection.test.messages.find()
+        return dumps(db.connection.test.messages.find())
 
     def post(self):
         if not request.data:

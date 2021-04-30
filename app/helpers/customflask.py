@@ -1,8 +1,16 @@
-from flask import Flask, Response
-from pymongo.cursor import Cursor
-from bson.json_util import dumps as bdumps
+from flask import Flask, Response, jsonify
 from werkzeug.exceptions import HTTPException
-from json import dumps as jdumps
+from werkzeug.exceptions import Aborter
+
+_mapping = Aborter().mapping
+
+
+def asJson(error):
+    return {
+        "code": error.code,
+        "name": error.name,
+        "description": error.description,
+    }, error.code
 
 
 class ApiResponse(Response):
@@ -17,7 +25,7 @@ class ApiResponse(Response):
     @classmethod
     def force_type(cls, rv, environ=None):
         if isinstance(rv, list) or isinstance(rv, dict):
-            rv = jdumps(rv)
+            rv = jsonify(rv)
         return super(ApiResponse, cls).force_type(rv, environ)
 
 
@@ -25,25 +33,17 @@ class ApiException(Exception):
     """The ApiException class is used by the ApiFlask class.
     When thrown it will be converted as json and send to the client."""
 
-    def __init__(self, message, status=400, payload={}):
-        self.message = message
-        self.status = status
-        self.payload = payload
+    def __init__(self, description, code=400, *args, **kwargs):
+        self._error = _mapping[code](description, *args, **kwargs)
 
-    def to_dict(self):
-        d = {
-            "message": self.message,
-            "status": self.status,
-        }
-        if self.payload:
-            d["payload"] = self.payload
-        return d
+    def to_response(self):
+        return asJson(self._error)
 
 
 class ApiFlask(Flask):
     """The ApiFlask class extends Flask and turns its default behavior into
-    a json api. It will also convert lists, dicts and pymongo cursor to json
-    when returned from a handler. Additionally it will return http errors as json."""
+    a json api. It will also convert lists, dicts json when returned from a handler.
+    Additionally it will return http errors as json."""
 
     response_class = ApiResponse
 
@@ -53,22 +53,10 @@ class ApiFlask(Flask):
         self.register_error_handler(HTTPException, self.http_error)
 
     def api_error(self, error):
-        return error.to_dict(), error.status
+        """ "Convert api expection to http error responses."""
+        self.logger.debug(error._error)
+        return error.to_response()
 
     def http_error(self, error):
         """Return JSON instead of HTML for HTTP errors."""
-        return {
-            "code": error.code,
-            "name": error.name,
-            "description": error.description,
-        }, error.code
-
-    def make_response(self, rv):
-        if isinstance(rv, tuple):
-            if isinstance(rv[0], Cursor):
-                rv = (bdumps(rv[0]),) + rv[1:]
-
-        elif isinstance(rv, Cursor):
-            rv = bdumps(rv)
-
-        return Flask.make_response(self, rv)
+        return asJson(error)

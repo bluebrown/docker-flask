@@ -1,14 +1,13 @@
 from pymongo import MongoClient
 from flask import current_app, _app_ctx_stack
-from pymongo.errors import ServerSelectionTimeoutError, ConfigurationError
+from pymongo.errors import ServerSelectionTimeoutError
+from werkzeug.exceptions import ServiceUnavailable
+from helpers.customflask import asJson
 
 
-def timeoutHandler(error):
-    return "", 503
-
-
-def configHandler(error):
-    return "", 500
+def timeoutHandler(err):
+    current_app.logger.warning(err)
+    return asJson(ServiceUnavailable())
 
 
 class MongoController(object):
@@ -23,7 +22,6 @@ class MongoController(object):
     def init_app(self, app):
         app.teardown_appcontext(self.teardown)
         app.register_error_handler(ServerSelectionTimeoutError, timeoutHandler)
-        app.register_error_handler(ConfigurationError, configHandler)
 
     def connect(self):
         return MongoClient(current_app.config["MONGO_URI"])
