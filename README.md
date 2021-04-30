@@ -141,6 +141,14 @@ The `GUNICORN_CMD_ARGS` variable can be used as per [documentation](https://docs
 GUNICORN_CMD_ARGS: "--workers=6 --threads=4"
 ```
 
+### Proxy Fix
+
+When running behind a proxy, a fix can be applied which reads information from `X-Proxy-Headers` and puts them accordingly in the `WSGI` request object. The parameters are passed to [ProxyFix](https://werkzeug.palletsprojects.com/en/1.0.x/middleware/proxy_fix/).
+
+```yml
+PROXY_FIX: x_for=1 x_host=1 x_port=1 x_prefix=1 x_proto=1
+```
+
 ## Development
 
 The project is using `pipenv` to manage dependencies. It can be useful to set up the virtual environment locally.
