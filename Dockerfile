@@ -42,6 +42,6 @@ LABEL org.opencontainers.image.created=${created} \
     GUNICORN_CMD_ARGS=see docs for all options,\
     MONGO_URI=a RFC-compliant URI" \
     dev.rainbowstack.healthcheck.readiness="GET /ready HTTP/1.1" \
-    dev.rainbowstack.healthcheck.liveliness="GET /ready HTTP/1.1"
+    dev.rainbowstack.healthcheck.liveliness="GET /alive HTTP/1.1"
 
 COPY app/ ./
